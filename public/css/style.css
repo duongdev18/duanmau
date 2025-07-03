@@ -1,0 +1,41 @@
+/* Custom styles */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+footer {
+    margin-top: auto;
+}
+
+.card {
+    transition: transform 0.2s;
+    margin-bottom: 20px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.product-card img {
+    height: 200px;
+    object-fit: cover;
+}
+
+.cart-item img {
+    max-width: 100px;
+    height: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .jumbotron {
+        padding: 2rem 1rem;
+    }
+    
+    .card {
+        margin-bottom: 1rem;
+    }
+} 
