@@ -1,4 +1,7 @@
 <?php
+// Path configuration
+define('APPROOT', dirname(dirname(__FILE__)));
+
 // Database configuration
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');

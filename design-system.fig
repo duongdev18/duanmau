@@ -1,0 +1,250 @@
+// This is a Figma design system file (.fig) for the e-commerce website
+
+// Color System
+Colors {
+  Primary: #0D6EFD // Blue for primary actions and links
+  Success: #198754 // Green for success states and categories
+  Warning: #FFC107 // Yellow for warnings and orders
+  Danger: #DC3545  // Red for errors and user-related items
+  Dark: #212529    // Dark gray for text and sidebar
+  Light: #F8F9FA   // Light gray for backgrounds
+  White: #FFFFFF   // White for cards and content areas
+}
+
+// Typography System
+Typography {
+  Heading-1: {
+    Font: Inter
+    Size: 24px
+    Weight: Bold
+    Color: #212529
+  }
+  Heading-2: {
+    Font: Inter
+    Size: 20px
+    Weight: SemiBold
+    Color: #212529
+  }
+  Body: {
+    Font: Inter
+    Size: 16px
+    Weight: Regular
+    Color: #212529
+  }
+  Small: {
+    Font: Inter
+    Size: 14px
+    Weight: Regular
+    Color: #6C757D
+  }
+}
+
+// Components
+Components {
+  // Navigation
+  Sidebar {
+    Background: #212529
+    Width: 250px
+    Items: {
+      Normal: {
+        Color: #FFFFFF
+        Opacity: 0.8
+      }
+      Active: {
+        Color: #FFFFFF
+        Opacity: 1
+        Background: rgba(255,255,255,0.1)
+      }
+    }
+  }
+
+  // Cards
+  StatsCard {
+    Width: 100%
+    Height: 120px
+    Padding: 20px
+    BorderRadius: 8px
+    Shadow: 0px 2px 4px rgba(0,0,0,0.1)
+    Layout: {
+      Icon: {
+        Size: 32px
+        Color: inherit
+      }
+      Number: {
+        Font: Heading-1
+        Color: inherit
+      }
+      Label: {
+        Font: Small
+        Color: inherit
+      }
+    }
+    Variants: {
+      Primary: {
+        Background: #0D6EFD
+        Color: #FFFFFF
+      }
+      Success: {
+        Background: #198754
+        Color: #FFFFFF
+      }
+      Warning: {
+        Background: #FFC107
+        Color: #212529
+      }
+      Danger: {
+        Background: #DC3545
+        Color: #FFFFFF
+      }
+    }
+  }
+
+  // Tables
+  Table {
+    Width: 100%
+    Background: #FFFFFF
+    BorderRadius: 8px
+    Shadow: 0px 2px 4px rgba(0,0,0,0.1)
+    Header: {
+      Background: #F8F9FA
+      Font: {
+        Size: 14px
+        Weight: SemiBold
+        Color: #212529
+      }
+      Padding: 12px 16px
+    }
+    Cell: {
+      Padding: 12px 16px
+      BorderBottom: 1px solid #DEE2E6
+      Font: Body
+    }
+  }
+
+  // Status Badges
+  Badge {
+    Padding: 4px 8px
+    BorderRadius: 4px
+    Font: Small
+    Variants: {
+      Pending: {
+        Background: #FFF3CD
+        Color: #856404
+      }
+      Processing: {
+        Background: #CFF4FC
+        Color: #055160
+      }
+      Shipped: {
+        Background: #CCE5FF
+        Color: #004085
+      }
+      Delivered: {
+        Background: #D4EDDA
+        Color: #155724
+      }
+      Cancelled: {
+        Background: #F8D7DA
+        Color: #721C24
+      }
+    }
+  }
+
+  // Forms
+  Form {
+    Input: {
+      Height: 40px
+      Padding: 8px 12px
+      BorderRadius: 4px
+      Border: 1px solid #DEE2E6
+      Font: Body
+      States: {
+        Focus: {
+          BorderColor: #0D6EFD
+          Shadow: 0 0 0 0.2rem rgba(13,110,253,0.25)
+        }
+        Error: {
+          BorderColor: #DC3545
+          Shadow: 0 0 0 0.2rem rgba(220,53,69,0.25)
+        }
+      }
+    }
+    Button: {
+      Height: 40px
+      Padding: 8px 16px
+      BorderRadius: 4px
+      Font: {
+        Size: 16px
+        Weight: SemiBold
+      }
+      Variants: {
+        Primary: {
+          Background: #0D6EFD
+          Color: #FFFFFF
+        }
+        Success: {
+          Background: #198754
+          Color: #FFFFFF
+        }
+        Danger: {
+          Background: #DC3545
+          Color: #FFFFFF
+        }
+      }
+    }
+  }
+}
+
+// Layouts
+Layouts {
+  // Admin Dashboard
+  Dashboard {
+    Grid: {
+      Columns: 4
+      Gap: 24px
+    }
+    Cards: {
+      Width: 100%
+      Margin: 24px 0
+    }
+    Tables: {
+      Grid: {
+        Columns: 2
+        Gap: 24px
+      }
+    }
+  }
+
+  // Auth Pages
+  Auth {
+    Width: 400px
+    Margin: auto
+    Card: {
+      Padding: 32px
+      Background: #FFFFFF
+      BorderRadius: 8px
+      Shadow: 0px 4px 6px rgba(0,0,0,0.1)
+    }
+  }
+
+  // Product Management
+  Products {
+    Grid: {
+      Columns: 3
+      Gap: 24px
+    }
+    Card: {
+      Width: 100%
+      Background: #FFFFFF
+      BorderRadius: 8px
+      Shadow: 0px 2px 4px rgba(0,0,0,0.1)
+      Image: {
+        Height: 200px
+        ObjectFit: cover
+      }
+      Content: {
+        Padding: 16px
+      }
+    }
+  }
+} 

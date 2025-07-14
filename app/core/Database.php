@@ -13,55 +13,80 @@ class Database {
         $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->dbname;
         $options = array(
             PDO::ATTR_PERSISTENT => true,
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
+            PDO::ATTR_EMULATE_PREPARES => false
         );
         
         try {
             $this->dbh = new PDO($dsn, $this->user, $this->pass, $options);
         } catch(PDOException $e) {
             $this->error = $e->getMessage();
-            echo $this->error;
+            throw new Exception("Database connection failed: " . $this->error);
         }
     }
     
-    public function query($sql) {
-        $this->stmt = $this->dbh->prepare($sql);
+    public function beginTransaction() {
+        return $this->dbh->beginTransaction();
     }
     
-    public function bind($param, $value, $type = null) {
-        if(is_null($type)) {
-            switch(true) {
-                case is_int($value):
-                    $type = PDO::PARAM_INT;
-                    break;
-                case is_bool($value):
-                    $type = PDO::PARAM_BOOL;
-                    break;
-                case is_null($value):
-                    $type = PDO::PARAM_NULL;
-                    break;
-                default:
+    public function commit() {
+        return $this->dbh->commit();
+    }
+    
+    public function rollBack() {
+        return $this->dbh->rollBack();
+    }
+    
+    public function query($sql, $params = []) {
+        try {
+            $this->stmt = $this->dbh->prepare($sql);
+            
+            if (!empty($params)) {
+                foreach ($params as $param => $value) {
                     $type = PDO::PARAM_STR;
+                    if (is_int($value)) {
+                        $type = PDO::PARAM_INT;
+                    } elseif (is_bool($value)) {
+                        $type = PDO::PARAM_BOOL;
+                    } elseif (is_null($value)) {
+                        $type = PDO::PARAM_NULL;
+                    }
+                    
+                    if (is_numeric($param)) {
+                        $param++;  // Array is 0-based, but PDO is 1-based
+                    }
+                    
+                    $this->stmt->bindValue($param, $value, $type);
+                }
             }
+            
+            $this->stmt->execute();
+            return $this->stmt;
+        } catch (PDOException $e) {
+            $this->error = $e->getMessage();
+            error_log("Database error: " . $this->error);
+            return false;
         }
-        $this->stmt->bindValue($param, $value, $type);
     }
     
-    public function execute() {
-        return $this->stmt->execute();
+    public function fetchAll() {
+        return $this->stmt->fetchAll();
     }
     
-    public function resultSet() {
-        $this->execute();
-        return $this->stmt->fetchAll(PDO::FETCH_OBJ);
-    }
-    
-    public function single() {
-        $this->execute();
-        return $this->stmt->fetch(PDO::FETCH_OBJ);
+    public function fetch() {
+        return $this->stmt->fetch();
     }
     
     public function rowCount() {
         return $this->stmt->rowCount();
+    }
+    
+    public function lastInsertId() {
+        return $this->dbh->lastInsertId();
+    }
+    
+    public function getError() {
+        return $this->error;
     }
 } 

@@ -1,7 +1,24 @@
+Options -Indexes
+
 RewriteEngine On
 RewriteBase /duanmau/
 
-# Redirect all requests to index.php
+# Allow any files or directories that exist to be displayed directly
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php?url=$1 [QSA,L] 
+
+# Rewrite all other URLs to index.php/URL
+RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+
+# Prevent viewing of .htaccess file
+<Files .htaccess>
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Prevent directory listings
+IndexIgnore *
+
+# PHP error handling
+php_flag display_errors on
+php_value error_reporting E_ALL 

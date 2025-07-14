@@ -2,39 +2,44 @@
 CREATE DATABASE IF NOT EXISTS duanmau;
 USE duanmau;
 
--- Users table
+-- Create users table
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) NOT NULL UNIQUE,
+    full_name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    full_name VARCHAR(100),
-    address TEXT,
-    phone VARCHAR(20),
-    role ENUM('user', 'admin') DEFAULT 'user',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+    role ENUM('admin', 'user') DEFAULT 'user',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Categories table
+-- Insert default admin user
+INSERT INTO users (full_name, email, password, role) VALUES 
+('Admin', 'admin@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin');
+-- Default password is 'password'
+
+-- Create categories table
 CREATE TABLE categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     description TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Products table
+-- Create products table
 CREATE TABLE products (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    category_id INT,
+    category_id INT NOT NULL,
     name VARCHAR(200) NOT NULL,
     description TEXT,
     price DECIMAL(10,2) NOT NULL,
+    stock INT NOT NULL DEFAULT 0,
     image VARCHAR(255),
-    stock INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
-);
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Orders table
 CREATE TABLE orders (
@@ -69,10 +74,6 @@ CREATE TABLE cart (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 );
-
--- Insert sample admin user (password: admin123)
-INSERT INTO users (username, email, password, full_name, role) VALUES
-('admin', 'admin@example.com', '$2y$10$8K1p/bGUklyYQZvNEKyK0.0IKlwBjQXKZ7XTzO1HB8jR0LJqL6SOi', 'Administrator', 'admin');
 
 -- Insert sample categories
 INSERT INTO categories (name, description) VALUES

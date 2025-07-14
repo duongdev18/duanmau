@@ -26,13 +26,28 @@ $url = rtrim($url, '/');
 $url = filter_var($url, FILTER_SANITIZE_URL);
 $url = explode('/', $url);
 
+// Special routes mapping
+$specialRoutes = [
+    'login' => ['controller' => 'AuthController', 'action' => 'login'],
+    'register' => ['controller' => 'AuthController', 'action' => 'register'],
+    'logout' => ['controller' => 'AuthController', 'action' => 'logout']
+];
+
 // Set default controller and action
-$controller = !empty($url[0]) ? $url[0] : 'home';
-$action = isset($url[1]) ? $url[1] : 'index';
+$controller = !empty($url[0]) ? strtolower($url[0]) : 'home';
+$action = isset($url[1]) ? strtolower($url[1]) : 'index';
 $params = array_slice($url, 2);
 
 // Create controller instance
-$controllerName = ucfirst($controller) . 'Controller';
+if (isset($specialRoutes[$controller])) {
+    // Handle special routes
+    $controllerName = $specialRoutes[$controller]['controller'];
+    $action = $specialRoutes[$controller]['action'];
+} else {
+    // Handle normal routes
+    $controllerName = ucfirst($controller) . 'Controller';
+}
+
 $controllerFile = BASE_PATH . '/app/controllers/' . $controllerName . '.php';
 
 if (file_exists($controllerFile)) {
@@ -44,10 +59,10 @@ if (file_exists($controllerFile)) {
     } else {
         // Handle 404
         header("HTTP/1.0 404 Not Found");
-        require_once BASE_PATH . '/app/views/error/404.php';
+        require BASE_PATH . '/app/views/error/404.php';
     }
 } else {
     // Handle 404
     header("HTTP/1.0 404 Not Found");
-    require_once BASE_PATH . '/app/views/error/404.php';
+    require BASE_PATH . '/app/views/error/404.php';
 } 

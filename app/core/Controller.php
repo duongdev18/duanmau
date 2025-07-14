@@ -7,6 +7,8 @@ class Controller {
     
     protected function view($view, $data = []) {
         if (file_exists('app/views/' . $view . '.php')) {
+            // Extract variables from the data array
+            extract($data);
             require_once 'app/views/' . $view . '.php';
         } else {
             die('View does not exist');
